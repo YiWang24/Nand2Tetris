@@ -1,0 +1,8 @@
+# Ignore note.md files
+note.md
+
+# Ignore note.md in any subdirectory
+**/note.md
+
+# Optional: Ignore backup versions of note files
+note.md.*
