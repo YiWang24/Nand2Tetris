@@ -1,0 +1,150 @@
+// PUSH CONSTANT 3030
+@3030
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// POP POINT 3
+@SP
+AM=M-1
+D=M
+@3
+M=D
+
+// PUSH CONSTANT 3040
+@3040
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// POP POINT 4
+@SP
+AM=M-1
+D=M
+@4
+M=D
+
+// PUSH CONSTANT 32
+@32
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP THIS 2
+@2
+D=A
+@THIS
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+// PUSH CONSTANT 46
+@46
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP THAT 6
+@6
+D=A
+@THAT
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+// PUSH POINT 3
+@3
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// PUSH POINT 4
+@4
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// add
+@SP
+A=M-1
+D=M
+@SP
+M=M-1
+@SP
+A=M-1
+M=D+M
+
+// PUSH THIS 2
+@2
+D=A
+@THIS
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//SUB
+@SP
+A=M-1
+D=M
+@SP
+M=M-1
+@SP
+A=M-1
+M=M-D
+
+// PUSH THAT 6
+@6
+D=A
+@THAT
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// add
+@SP
+A=M-1
+D=M
+@SP
+M=M-1
+@SP
+A=M-1
+M=D+M
+
