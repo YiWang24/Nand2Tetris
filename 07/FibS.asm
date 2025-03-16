@@ -1,0 +1,275 @@
+
+// PUSH ARG 1
+@1
+D=A
+@ARG
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// POP POINT 4
+@SP
+AM=M-1
+D=M
+@4
+M=D
+
+// PUSH CONSTANT 0
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP THAT 0
+@0
+D=A
+@THAT
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+// PUSH CONSTANT 1
+@1
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//POP THAT 1
+@1
+D=A
+@THAT
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+// PUSH ARG 0
+@0
+D=A
+@ARG
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// PUSH CONSTANT 2
+@2
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//SUB
+@SP
+A=M-1
+D=M
+@SP
+M=M-1
+@SP
+A=M-1
+M=M-D
+
+//POP ARG 0
+@0
+D=A
+@ARG
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+// LABEL FibS.vm$LOOP
+(FibS.vm$LOOP)
+
+// PUSH ARG 0
+@0
+D=A
+@ARG
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// IF-GOTO FibS.vm$COMPUTE_ELEMENT
+@SP
+AM=M-1
+D=M
+@FibS.vm$COMPUTE_ELEMENT
+D;JNE
+
+// GOTO FibS.vm$END
+@FibS.vm$END
+0;JMP
+
+// LABEL FibS.vm$COMPUTE_ELEMENT
+(FibS.vm$COMPUTE_ELEMENT)
+
+// PUSH THAT 0
+@0
+D=A
+@THAT
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// PUSH THAT 1
+@1
+D=A
+@THAT
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// add
+@SP
+A=M-1
+D=M
+@SP
+M=M-1
+@SP
+A=M-1
+M=D+M
+
+//POP THAT 2
+@2
+D=A
+@THAT
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+// PUSH POINT 4
+@4
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// PUSH CONSTANT 1
+@1
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// add
+@SP
+A=M-1
+D=M
+@SP
+M=M-1
+@SP
+A=M-1
+M=D+M
+
+// POP POINT 4
+@SP
+AM=M-1
+D=M
+@4
+M=D
+
+// PUSH ARG 0
+@0
+D=A
+@ARG
+AD=D+M
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+// PUSH CONSTANT 1
+@1
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+
+//SUB
+@SP
+A=M-1
+D=M
+@SP
+M=M-1
+@SP
+A=M-1
+M=M-D
+
+//POP ARG 0
+@0
+D=A
+@ARG
+D=D+M
+@R13
+M=D
+@SP
+AM=M-1
+D=M
+@R13
+A=M
+M=D
+
+// GOTO FibS.vm$LOOP
+@FibS.vm$LOOP
+0;JMP
+
+// LABEL FibS.vm$END
+(FibS.vm$END)
+

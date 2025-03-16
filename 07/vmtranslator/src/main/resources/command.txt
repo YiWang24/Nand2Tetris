@@ -1,3 +1,171 @@
+// Init
+@256
+D=A
+@SP
+M=D
+
+
+
+
+//RETURN
+@LCL
+D=M
+@frame
+M=D // FRAME = LCL
+@5
+D=D-A
+A=D
+D=M
+@return_address
+M=D // RET = *(FRAME-5)
+@SP
+M=M-1
+A=M
+D=M
+@ARG
+A=M
+M=D // *ARG = pop()
+@ARG
+D=M+1
+@SP
+M=D // SP = ARG+1
+@frame
+D=M-1
+A=D
+D=M
+@THAT
+M=D // THAT = *(FRAME-1)
+@2
+D=A
+@frame
+D=M-D
+A=D
+D=M
+@THIS
+M=D // THIS = *(FRAME-2)
+@3
+D=A
+@frame
+D=M-D
+A=D
+D=M
+@ARG
+M=D // ARG = *(FRAME-3)
+@4
+D=A
+@frame
+D=M-D
+A=D
+D=M
+@LCL
+M=D // LCL = *(FRAME-4)
+@return_address
+A=M
+0;JMP // goto RET
+
+
+
+
+// FUNCTION {SEGMENT} {INDEX}
+// Function's entry point
+({SEGMENT})
+//push nVars 0 values (initializes the callee’s local variables)
+@{INDEX}
+D=A
+(LOOP_{ID})
+@END_{ID}
+D;JEQ
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+D=D-1
+@LOOP_{ID}
+D;JGT
+(END_{ID})
+
+
+// CALL {SEGMENT} {INDEX}
+// ---- Step 1: Push return address ----
+@RETURN_ADDRESS_{ID}
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// ---- Step 2: Push LCL ----
+@LCL
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// ---- Step 3: Push ARG ----
+@ARG
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// ---- Step 4: Push THIS ----
+@THIS
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// ---- Step 5: Push THAT ----
+@THAT
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// ---- Step 6: ARG = SP - (n + 5) ----
+@SP
+D=M
+@{INDEX}
+D=D-A
+@5
+D=D-A
+@ARG
+M=D
+// ---- Step 7: LCL = SP ----
+@SP
+D=M
+@LCL
+M=D
+// ---- Step 8: Goto function ----
+@{SEGMENT}
+0;JMP
+// ---- Step 9: Declare return address label ----
+(RETURN_ADDRESS_{ID})
+
+
+
+
+// LABEL {SEGMENT}
+({SEGMENT})
+
+// GOTO {SEGMENT}
+@{SEGMENT}
+0;JMP
+
+// IF-GOTO {SEGMENT}
+@SP
+AM=M-1
+D=M
+@{SEGMENT}
+D;JNE
+
 // PUSH POINT {INDEX}
 @{INDEX}
 D=M
@@ -100,65 +268,65 @@ M=M-D
 A=M-1
 M=-M
 
-               // EQ
-               @SP
-               M=M-1
-               A=M
-               D=M
-               A=A-1
-               D=M-D
-               @EQ
-               D;JEQ
-               @SP
-               A=M-1
-               M=0
-               @END
-               0;JMP
-               (EQ)
-               @SP
-               A=M-1
-               M=-1
-               (END)
+// EQ
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+D=M-D
+@EQ
+D;JEQ
+@SP
+A=M-1
+M=0
+@END
+0;JMP
+(EQ)
+@SP
+A=M-1
+M=-1
+(END)
 
-               // GT
-               @SP
-               M=M-1
-               A=M
-               D=M
-               A=A-1
-               D=M-D
-               @GT
-               D;JGT
-               @SP
-               A=M-1
-               M=0
-               @END
-               0;JMP
-               (GT)
-               @SP
-               A=M-1
-               M=-1
-               (END)
+// GT
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+D=M-D
+@GT
+D;JGT
+@SP
+A=M-1
+M=0
+@END
+0;JMP
+(GT)
+@SP
+A=M-1
+M=-1
+(END)
 
-               // lt
-               @SP
-               M=M-1
-               A=M
-               D=M
-               A=A-1
-               D=M-D
-               @LT
-               D;JLT
-               @SP
-               A=M-1
-               M=0
-               @END
-               0;JMP
-               (LT)
-               @SP
-               A=M-1
-               M=-1
-               (END)
+// lt
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+D=M-D
+@LT
+D;JLT
+@SP
+A=M-1
+M=0
+@END
+0;JMP
+(LT)
+@SP
+A=M-1
+M=-1
+(END)
 
 
 //AND
@@ -169,15 +337,15 @@ D=M
 A=A-1
 M=D&M
 
-               // or
-               @SP
-               M=M-1
-               A=M
-               D=M
-               A=A-1
-               M=D|M
+// or
+@SP
+M=M-1
+A=M
+D=M
+A=A-1
+M=D|M
 
-               // not
-               @SP
-               A=M-1
-               M=!M
+// not
+@SP
+A=M-1
+M=!M

@@ -1,6 +1,7 @@
 package com.wycode;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,10 +23,10 @@ public class Parser {
     private int currentLine;
 
     //Constructor / initializer: Creates a Parser and opens the input (source VM code) file
-    public Parser(String fileName) {
+    public Parser(File file) {
         cleanCommands = new ArrayList<>();
         currentLine = 0;
-        readCommands(fileName);
+        readCommands(file);
     }
 
     //Checks if there is more work to do (boolean)
@@ -107,8 +108,8 @@ public class Parser {
 
 
     //read and clean file
-    private void readCommands(String fileName) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+    private void readCommands(File file) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 line = line.split("//")[0].trim();
@@ -118,7 +119,7 @@ public class Parser {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error reading file: " + fileName);
+            System.out.println("Error reading file: " + file.getName());
             e.printStackTrace();
         }
     }

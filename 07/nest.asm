@@ -1,32 +1,4 @@
-// Init
-@256            
-D=A
-@SP
-M=D            
-
-@Sys.init       
-0;JMP    
-
-// FUNCTION test.vm.SYS.INIT 0
-// Function's entry point
-(test.vm.SYS.INIT)
-//push nVars 0 values (initializes the callee’s local variables)
-@0
-D=A
-(LOOP_1)
-@END_1
-D;JEQ
-@0
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-D=D-1
-@LOOP_1
-D;JGT
-(END_1)
+(SYS.INIT)
 
 // PUSH CONSTANT 4000
 @4000
@@ -60,16 +32,15 @@ D=M
 @4
 M=D
 
-// CALL test.vm.SYS.MAIN 0
-// ---- Step 1: Push return address ----
-@RETURN_ADDRESS_6
+// CALL SYS.MAIN 0
+@SYS.MAIN$ret.5
 D=A
 @SP
 A=M
 M=D
 @SP
 M=M+1
-// ---- Step 2: Push LCL ----
+// push LCL
 @LCL
 D=M
 @SP
@@ -77,7 +48,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 3: Push ARG ----
+// push ARG
 @ARG
 D=M
 @SP
@@ -85,7 +56,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 4: Push THIS ----
+// push THIS
 @THIS
 D=M
 @SP
@@ -93,7 +64,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 5: Push THAT ----
+// push THAT
 @THAT
 D=M
 @SP
@@ -101,7 +72,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 6: ARG = SP - (n + 5) ----
+// ARG = SP-n-5
 @SP
 D=M
 @0
@@ -110,17 +81,16 @@ D=D-A
 D=D-A
 @ARG
 M=D
-// ---- Step 7: LCL = SP ----
+// LCL = SP
 @SP
 D=M
 @LCL
 M=D
-// ---- Step 8: Goto function ----
-@test.vm.SYS.MAIN
+// goto f
+@SYS.MAIN
 0;JMP
-// ---- Step 9: Declare return address label ----
-(RETURN_ADDRESS_6)
-
+// (return-address)
+(SYS.MAIN$ret.5)
 //POP TEMP 1
 @1
 D=A
@@ -142,26 +112,32 @@ M=D
 @LOOP
 0;JMP
 
-// FUNCTION test.vm.SYS.MAIN 5
-// Function's entry point
-(test.vm.SYS.MAIN)
-//push nVars 0 values (initializes the callee’s local variables)
-@5
-D=A
-(LOOP_10)
-@END_10
-D;JEQ
-@0
-D=A
+(SYS.MAIN)
 @SP
 A=M
-M=D
+M=0
 @SP
 M=M+1
-D=D-1
-@LOOP_10
-D;JGT
-(END_10)
+@SP
+A=M
+M=0
+@SP
+M=M+1
+@SP
+A=M
+M=0
+@SP
+M=M+1
+@SP
+A=M
+M=0
+@SP
+M=M+1
+@SP
+A=M
+M=0
+@SP
+M=M+1
 
 // PUSH CONSTANT 4001
 @4001
@@ -273,16 +249,15 @@ M=D
 @SP
 M=M+1
 
-// CALL test.vm.SYS.ADD12 1
-// ---- Step 1: Push return address ----
-@RETURN_ADDRESS_22
+// CALL SYS.ADD12 1
+@SYS.ADD12$ret.21
 D=A
 @SP
 A=M
 M=D
 @SP
 M=M+1
-// ---- Step 2: Push LCL ----
+// push LCL
 @LCL
 D=M
 @SP
@@ -290,7 +265,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 3: Push ARG ----
+// push ARG
 @ARG
 D=M
 @SP
@@ -298,7 +273,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 4: Push THIS ----
+// push THIS
 @THIS
 D=M
 @SP
@@ -306,7 +281,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 5: Push THAT ----
+// push THAT
 @THAT
 D=M
 @SP
@@ -314,7 +289,7 @@ A=M
 M=D
 @SP
 M=M+1
-// ---- Step 6: ARG = SP - (n + 5) ----
+// ARG = SP-n-5
 @SP
 D=M
 @1
@@ -323,17 +298,16 @@ D=D-A
 D=D-A
 @ARG
 M=D
-// ---- Step 7: LCL = SP ----
+// LCL = SP
 @SP
 D=M
 @LCL
 M=D
-// ---- Step 8: Goto function ----
-@test.vm.SYS.ADD12
+// goto f
+@SYS.ADD12
 0;JMP
-// ---- Step 9: Declare return address label ----
-(RETURN_ADDRESS_22)
-
+// (return-address)
+(SYS.ADD12$ret.21)
 //POP TEMP 0
 @0
 D=A
@@ -449,94 +423,62 @@ A=M-1
 M=D+M
 
 //RETURN
-// FRAME = LCL
 @LCL
 D=M
-@FRAME
-M=D
-
-// RET = *(FRAME - 5) （get return address）
+@frame
+M=D // FRAME = LCL
 @5
-D=A
-@FRAME
-A=M-D
+D=D-A
+A=D
 D=M
-@RET
-M=D
-
-// *ARG = pop() （return value to ARG[0]）
+@return_address
+M=D // RET = *(FRAME-5)
 @SP
-A=M-1
+M=M-1
+A=M
 D=M
 @ARG
 A=M
-M=D
-
-// SP = ARG + 1
+M=D // *ARG = pop()
 @ARG
 D=M+1
 @SP
-M=D
-
-// restore THAT = *(FRAME - 1)
-@FRAME
-A=M-1
+M=D // SP = ARG+1
+@frame
+D=M-1
+A=D
 D=M
 @THAT
-M=D
-
-// restore THIS = *(FRAME - 2)
-@FRAME
-D=M
+M=D // THAT = *(FRAME-1)
 @2
-A=D-A
+D=A
+@frame
+D=M-D
+A=D
 D=M
 @THIS
-M=D
-
-// restore ARG = *(FRAME - 3)
-@FRAME
-D=M
+M=D // THIS = *(FRAME-2)
 @3
-A=D-A
+D=A
+@frame
+D=M-D
+A=D
 D=M
 @ARG
-M=D
-
-// restore LCL = *(FRAME - 4)
-@FRAME
-D=M
+M=D // ARG = *(FRAME-3)
 @4
-A=D-A
+D=A
+@frame
+D=M-D
+A=D
 D=M
 @LCL
-M=D
-
-// GOTO RET
-@RET
+M=D // LCL = *(FRAME-4)
+@return_address
 A=M
-0;JMP
+0;JMP // goto RET
 
-// FUNCTION test.vm.SYS.ADD12 0
-// Function's entry point
-(test.vm.SYS.ADD12)
-//push nVars 0 values (initializes the callee’s local variables)
-@0
-D=A
-(LOOP_34)
-@END_34
-D;JEQ
-@0
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-D=D-1
-@LOOP_34
-D;JGT
-(END_34)
+(SYS.ADD12)
 
 // PUSH CONSTANT 4002
 @4002
@@ -602,71 +544,58 @@ A=M-1
 M=D+M
 
 //RETURN
-// FRAME = LCL
 @LCL
 D=M
-@FRAME
-M=D
-
-// RET = *(FRAME - 5) （get return address）
+@frame
+M=D // FRAME = LCL
 @5
-D=A
-@FRAME
-A=M-D
+D=D-A
+A=D
 D=M
-@RET
-M=D
-
-// *ARG = pop() （return value to ARG[0]）
+@return_address
+M=D // RET = *(FRAME-5)
 @SP
-A=M-1
+M=M-1
+A=M
 D=M
 @ARG
 A=M
-M=D
-
-// SP = ARG + 1
+M=D // *ARG = pop()
 @ARG
 D=M+1
 @SP
-M=D
-
-// restore THAT = *(FRAME - 1)
-@FRAME
-A=M-1
+M=D // SP = ARG+1
+@frame
+D=M-1
+A=D
 D=M
 @THAT
-M=D
-
-// restore THIS = *(FRAME - 2)
-@FRAME
-D=M
+M=D // THAT = *(FRAME-1)
 @2
-A=D-A
+D=A
+@frame
+D=M-D
+A=D
 D=M
 @THIS
-M=D
-
-// restore ARG = *(FRAME - 3)
-@FRAME
-D=M
+M=D // THIS = *(FRAME-2)
 @3
-A=D-A
+D=A
+@frame
+D=M-D
+A=D
 D=M
 @ARG
-M=D
-
-// restore LCL = *(FRAME - 4)
-@FRAME
-D=M
+M=D // ARG = *(FRAME-3)
 @4
-A=D-A
+D=A
+@frame
+D=M-D
+A=D
 D=M
 @LCL
-M=D
-
-// GOTO RET
-@RET
+M=D // LCL = *(FRAME-4)
+@return_address
 A=M
-0;JMP
+0;JMP // goto RET
 
