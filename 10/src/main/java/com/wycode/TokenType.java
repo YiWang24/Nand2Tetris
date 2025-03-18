@@ -17,8 +17,14 @@ public class TokenType {
             '{', '}', '(', ')', '[', ']', '.', ',', ';', '+', '-', '*', '/',
             '&', '|', '<', '>', '=', '~'
     ));
-    public static int INTEGER_LOW_BOUND = 0;
-    public static int INTEGER_HIGH_BOUND = 32767;
+    public static final Set<Character> UNARY_OP = new HashSet<>(Arrays.asList(
+            '-', '~'));
+    public static final Set<String> KEYWORD_CONSTANT = new HashSet<>(Arrays.asList(
+            "true", "false", "null", "this"
+    ));
+    public static final Set<Character> OP = new HashSet<>(Arrays.asList(
+            '+', '-', '*', '/', '&', '|', '<', '>', '='
+    ));
     public static final String KEYWORD = "keyword";
     public static final String SYMBOL = "symbol";
     public static final String INTEGER_CONSTANT = "integerConstant";
