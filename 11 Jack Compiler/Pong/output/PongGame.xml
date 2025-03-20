@@ -1,0 +1,12 @@
+<class>
+<keyword> class </keyword>
+<identifier> PongGame </identifier>
+<symbol> { </symbol>
+<classVarDec>
+<keyword> static </keyword>
+<identifier> PongGame </identifier>
+<identifier> instance </identifier>
+<symbol> ; </symbol>
+</classVarDec>
+<identifier> b </identifier>
+</class>
