@@ -1,1 +1,0 @@
-import { COMP } from "./constants";
